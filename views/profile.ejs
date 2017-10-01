@@ -9,115 +9,16 @@
 
     <h3>feed</h3>
 
-    <p><a href="/user/<%= user.local.username %>">my profile</a></p>
-    <p><a href="/create">create</a></p>
-    <p><a href="/follow">follow tags</a></p>
-
-    <a href="/">Home</a>
-    <a href="/new">New</a>
-    <a href="/top">Top</a>
-    <a href="/categories/us">U.S.</a>
-    <a href="/categories/sports">Sports</a>
-    <a href="/categories/entertainment">Entertainment</a>
-    <a href="/categories/environment">Environment</a>
-    <a href="/categories/fashion">Fashion</a>
-    <a href="/categories/food">Food</a>
-    <a href="/categories/health">Health</a>
-    <a href="/categories/lifestyle">Lifestyle</a>
-    <a href="/categories/money">Money</a>
-    <a href="/categories/opinion">Opinion</a>
-    <a href="/categories/politics">Politics</a>
-    <a href="/categories/science">Science</a>
-    <a href="/categories/technology">Technology</a>
-    <a href="/categories/travel">Travel</a>
-    <a href="/categories/world">World</a>
-    <a href="/categories/misc">Misc.</a>
+    <% include nav %>
 
     <h3><%= page %>'s profile</h3>
 
     <p><a href="/user/<%= page %>">posts</a></p>
     <p><a href="/user/<%= page %>/likes">likes</a></p>
 
-    <ul id='medialist'>
-        <% for(var i=0; i <posts.length; i++) { %>
-            <li>
-                <a href=<%= posts[i].link %>> <%= posts[i].title %> </a>
-                <p> <%= posts[i].host %> </p>
-                <img src=<%= posts[i].image %> style="max-height: 400px; max-width: 400px;">
-                <p> <a href="/categories/<%= posts[i].category %>"><%= posts[i].category %> </a> </p>
-                <p> <%= posts[i].datePosted %> </p>
-                <p> Submitted by <a href="/user/<%= posts[i].author.local.username %>"><%= posts[i].author.local.username %> </a></p>
+    <% include posts %>
 
-                <% if(posts[i].likedBy.indexOf(user._id) === -1){ %>
-                    <p class='likebutton' data-postid=<%= posts[i]._id %>>Like</p>
-                <% } %>
-
-                <% if(posts[i].likedBy.indexOf(user._id) !== -1){ %>
-                    <p class='unlikebutton' data-postid=<%= posts[i]._id %>>Unlike</p>
-                <% } %>
-                
-                <p> <%= posts[i].likesCount %> </p>
-
-                <% if(posts[i].author._id.equals(user._id)){ %>
-                    <p class='deletebutton' data-postid=<%= posts[i]._id %>>Delete</p>
-                <% } %>
-            </li>
-        <% } %>
-    </ul>
+    <script src="/js/functions.js"></script>
 
 </body>
-
-<script>
-
-    $(function(){
-
-        var $medialist = $('#medialist');
-        
-        $medialist.delegate('.likebutton', 'click', function(){
-            var that = $(this);
-            var postID = $(this).attr('data-postid');
-            $.ajax({
-                type: 'PUT',
-                url: '/like/' + postID,
-                success: function(data){
-                    console.log(data);
-                    that.removeClass( "likebutton" ).addClass( "unlikebutton" );
-                    that.html("Unlike");
-                    that.next().html(data.likesCount);
-                }
-            });
-        });
-
-        $medialist.delegate('.unlikebutton', 'click', function(){
-            var that = $(this);
-            var postID = $(this).attr('data-postid');
-            $.ajax({
-                type: 'PUT',
-                url: '/unlike/' + postID,
-                success: function(data){
-                    console.log(data);
-                    that.removeClass( "unlikebutton" ).addClass( "likebutton" );
-                    that.html("Like");
-                    that.next().html(data.likesCount);
-                }
-            });
-        });
-
-        $medialist.delegate('.deletebutton', 'click', function(){
-            var that = $(this);
-            var postID = $(this).attr('data-postid');
-            var $li = $(this).closest('li');
-            $.ajax({
-                type: 'DELETE',
-                url: '/' + postID,
-                success: function(data){
-                    console.log(data);
-                    $li.remove();
-                }
-            });
-        });
-
-    });
-
-</script>
 </html>

@@ -20,6 +20,7 @@ app.use(cookieParser());
 app.use(bodyParser());
 
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 
 app.use(session({ secret: '' }));
 app.use(passport.initialize());

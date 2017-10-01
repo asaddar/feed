@@ -1,0 +1,30 @@
+<ul id='medialist'>
+        <% for(var i=0; i <posts.length; i++) { %>
+            <li>
+                <% if(!posts[i].image){ %>
+                    <img src=<%= posts[i].link %> style="max-height: 400px; max-width: 400px;">
+                <% } else { %>
+                    <a href=<%= posts[i].link %>> <%= posts[i].title %> </a>
+                    <p> <%= posts[i].host %> </p>
+                    <img src=<%= posts[i].image %> style="max-height: 400px; max-width: 400px;">
+                <% } %>
+                <p> <a href="/categories/<%= posts[i].category %>"><%= posts[i].category %> </a> </p>
+                <p> <%= posts[i].datePosted %> </p>
+                <p> Submitted by <a href="/user/<%= posts[i].author.local.username %>"><%= posts[i].author.local.username %> </a></p>
+
+                <% if(posts[i].likedBy.indexOf(user._id) === -1){ %>
+                    <p class='likebutton' data-postid=<%= posts[i]._id %>>Like</p>
+                <% } %>
+
+                <% if(posts[i].likedBy.indexOf(user._id) !== -1){ %>
+                    <p class='unlikebutton' data-postid=<%= posts[i]._id %>>Unlike</p>
+                <% } %>
+                
+                <p> <%= posts[i].likesCount %> </p>
+
+                <% if(posts[i].author._id.equals(user._id)){ %>
+                    <p class='deletebutton' data-postid=<%= posts[i]._id %>>Delete</p>
+                <% } %>
+            </li>
+        <% } %>
+</ul>
