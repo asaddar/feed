@@ -28,4 +28,4 @@ app.use(passport.session());
 require('./app/routes.js')(app, passport);
 
 app.listen(port);
-console.log('The magic happens on port ' + port);
+console.log('port ' + port);
